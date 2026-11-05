@@ -43,6 +43,67 @@ Project Objectives:
   Data Visualization: matplotlib , seaborn , plotly 
 
 
+Data Cleaning and Preprocessing
+The dataset underwent rigorous cleaning and validation steps:
+	Handling Missing Values: Identified missing values across financial metrics (revenues, long_term_debt, net_income) and applied groupwise median imputation by ticker, followed by KNN imputation (n_neighbors=5) for remaining numeric features.
+	Removing Duplicate Records: Checked for exact duplicate rows (df.duplicated().sum()) and dropped redundant entries while maintaining the primary time-series index.
+	Correcting Data Types: Standardized date columns to datetime objects and cast financial metrics to float64.
+	Outlier Handling (IQR Method): Calculated Interquartile Ranges (IQR=Q3-Q1) and established bounds [Q1-1.5×IQR,Q3+1.5×IQR] to identify and analyze extreme financial outliers (e.g., hyper-growth firms and distressed cash burners).
+	Checking Invalid Values: Scanned for negative revenues, zero division anomalies, and infinite values (np.inf), cleaning and replacing them appropriately.
+	Categorical Standardization: Stripped whitespace and standardized text and sector names (e.g., unifying "Tech" and "Information Technology").
+
+
+Exploratory Data Analysis (EDA)
+EDA focused on evaluating data distributions, summary statistics, and structural relationships across fundamental metrics. Summary statistics confirmed that median company revenue hovers within predictable operating bands, while net income and operating cash flows exhibit long right-tail distributions driven by megacap technology firms
+
+
+Data Visualization
+Chart 1: comparison of Top &Bottom 10 Companies to identify the most profitable and loss making companies with Horizonal Bar Chart in one window
+Interpretation: Microsoft (MSFT) leads the NASDAQ exchange with $133.75 billion in net income, closely followed by Alphabet (GOOGL at $132.17B), NVIDIA (NVDA at $120.07B), and Apple (AAPL at $112.01B). Big tech dominates the top tier, generating over $100 billion each.
+Highlights distressed outliers experiencing negative net income, led by heavy capital expenditure or operational losses (such as Hooker Furnishings at extreme negative earnings), emphasizing the dichotomy between growth-stage cash burners and mature market leaders
+
+Free Cash Flow Margin (FCF / Revenue) Ranking(Horizontal Bar Chart
+Photronics (PLAB) achieves the highest cash efficiency, converting 41.8% of revenue into free cash flow. A wide spread exists between efficient cash generators and cash-burning retailers/furnishing firms.
+
+Distribution of Free Cash Flow Across Sectors/Filings (Hist Plot)
+Interpretation: The distribution is heavily skewed toward zero. The vast majority of companies experiencing negative cash flow cluster tightly between $0$ and $2 billion, indicating that most "burning" firms operate with relatively low cash burn magnitude. A long, thin tail stretches out toward $25billion for heavily capital-intensive or distressed outliers.
+ The distribution of profitable companies is similarly front-loaded near zero (peaking around the $0to $3billion. The curve drops off steeply, showing that companies generating massive positive free cash flow (stretching past $10 to $40 billion are rare outliers.
+
+The frequency distribution heavily mirrors reporting cycles. Quarterly filings (10-Q, shown in blue) vastly outnumber annual reports (10-K, shown in orange) by roughly a $4to$1 ratio, which aligns with companies filing three quarters and one annual report per fiscal year.
+Across both filing types, the bulk of financial data points compress intensely within the $2 billionto $3billion band, demonstrating that median company-level cash flows in the dataset hover very close to breakeven
+
+Correlation Heatmap of NASDAQ Fundamentals
+Interpretation: Operating cash flow and net income exhibit a very strong positive correlation (0.89), demonstrating that earnings reliably translate to operating cash inflows. Total assets and revenues show robust scaling correlation (0.62).
+
+Financial Leverage (Debt-to-Assets) by Form Type with Box Plot
+ Interpretation: Median leverage remains conservative (under 25%) across both 10-Q and 10-K filings. 10-Q quarterly reports exhibit slightly broader interquartile spreads and higher upper whiskers prior to year-end audit adjustments.
+
+ Key Findings and Insights
+	Megacap Profit Concentration: The top 4 tech companies account for an outsized share of total net income on the NASDAQ exchange.
+	Cash Flow Alignment: Net income correlates strongly with operating cash flow (0.89) and free cash flow (0.79).
+	 Sector Divergence: While asset-heavy industrial firms rely more heavily on long-term debt financing, asset-light tech firms maintain high FCF conversion efficiency.
+
+Recommendations
+●	For Investors: Prioritize companies with robust Free Cash Flow margins (such as PLAB and LULU) over top-line revenue growth alone.
+●	 For Risk Managers: Monitor companies exhibiting extreme negative cash flow margins and elevated debt-to-asset ratios during quarterly 10-Q filings.
+
+
+Conclusion
+This project executed a data cleaning, imputation, and exploratory analysis pipeline across 22,785 NASDAQ corporate records spanning 2024 to 2026. By addressing data quality challenges—including missingness rates reaching 58.5% across balance sheet fields—through structured accounting rules, domain-based medians, and K-Nearest Neighbors imputation, a complete dataset was established without synthetic skewing. The resulting analysis highlights structural market dynamics on the NASDAQ exchange, contrasting the operating efficiency of established large-cap leaders with the cash deployment patterns of early-stage growth firms
+
+
+Limitations and Future Scope
+●	Constrained Time Horizon: The analyzed dataset spans a 32-month period (January 2024 – August 2026), limiting long-term historical cyclical evaluation across broader market environments.
+●	Exogenous Macro Factors: Macroeconomic indicators—such as Federal Reserve benchmark interest rates, prevailing inflation metrics, and foreign exchange currency fluctuations—were not included in this dataset.
+●	Future Scope: Future work can incorporate macroeconomic interest rate indicators, daily stock price volatility, and machine learning models to predict financial distress ahead of quarterly earnings releases.
+
+
+
+References
+●	NASDAQ Financials & Fundamentals (2024–2026) Dataset by Abdurrahman Hakan Acar on Kaggle
+●	Pandas Software Library Documentation: https://pandas.pydata.org/docs/
+●	NumPy Mathematical Library Reference: https://numpy.org/doc/
+●	Scikit-Learn Machine Learning Architecture Guides: https://scikit-learn.org/stable/documentation.html
 
 
 
